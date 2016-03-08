@@ -1,0 +1,11 @@
+Línea 10: la propiedad Icon de frmMantenusu tenía una referencia a archivo no válida.
+Línea 77: la propiedad ItemData de Combo2 tenía una referencia a archivo no válida.
+Línea 79: la propiedad List de Combo2 tenía una referencia a archivo no válida.
+Línea 194: la propiedad ItemData de Combo1 tenía una referencia a archivo no válida.
+Línea 196: la propiedad List de Combo1 tenía una referencia a archivo no válida.
+Línea 225: la propiedad Picture de cmdUsu tenía una referencia a archivo no válida.
+Línea 236: la propiedad Picture de cmdEmp tenía una referencia a archivo no válida.
+Línea 247: la propiedad Picture de cmdUsu tenía una referencia a archivo no válida.
+Línea 258: la propiedad Picture de cmdUsu tenía una referencia a archivo no válida.
+Línea 269: la propiedad Picture de cmdEmp tenía una referencia a archivo no válida.
+Línea 280: la propiedad Tag de ListView2 debe ser una cadena encerrada entre comillas

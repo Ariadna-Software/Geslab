@@ -1,0 +1,5 @@
+Línea 19: la clase Crystal.CrystalReport del control CR1 no era una clase de control cargada.
+Línea 22: el nombre de la propiedad _ExtentX de CR1 no es válido.
+Línea 23: el nombre de la propiedad _ExtentY de CR1 no es válido.
+Línea 24: el nombre de la propiedad _Version de CR1 no es válido.
+Línea 25: el nombre de la propiedad PrintFileLinesPerPage de CR1 no es válido.

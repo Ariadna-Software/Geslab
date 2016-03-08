@@ -1,0 +1,37 @@
+dbBinary = 9
+dbBoolean = 1
+dbByte = 2
+dbChar = 18
+dbCurrency = 5
+dbDate = 8
+dbDecimal = 20
+dbDouble = 7
+dbFloat = 21
+dbInteger = 3
+dbLong = 4
+dbMemo = 12
+dbNumeric = 19
+dbSingle = 6
+dbText = 10
+dbTime = 22
+
+
+
+
+para la declaracion de las variaabñles
+Private dbBinary as long 
+Private dbBoolean as long  
+Private dbByte as long
+Private dbChar as long
+Private dbCurrency as long
+Private dbDate as long
+Private dbDecimal as long
+Private dbDouble as long
+Private dbFloat as long
+Private dbInteger as long
+Private dbLong as long
+Private dbMemo as long
+Private dbNumeric as long
+Private dbSingle as long
+Private dbText as long
+Private dbTime as long

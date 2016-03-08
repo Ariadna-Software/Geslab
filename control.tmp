@@ -1,0 +1,7 @@
+# Parametrizaci¢n para la aplicacion
+
+BaseDatos = Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\ControlPresencia\BDatos.mdb;Persist Security Info=Fal
+DirMarcajes = C:\ControlPresencia
+DirProcesados = C:\ControlPresencia\Procesados
+
+# Fin parametros de configuracion

@@ -1,0 +1,29 @@
+
+Insercion datos alzira
+
+
+
+'DIGITO DE CONTROL
+
+
+UPDATE system_straba  SET system_straba.digcontr='00' 
+WHERE (((system_straba.digcontr) =  "**"));
+
+
+UPDATE system_straba  SET cuentaba='0' 
+WHERE cuentaba ='';
+
+
+INSERT INTO trabajadores(IdTrabajador, IdEmpresa, NumTarjeta, idCategoria, IdHorario, 
+NomTrabajador, DomTrabajador, PobTrabajador, ProvTrabajador, CodPosTrabajador, TelTrabajador, MovTrabajador,
+ FecAlta, FecBaja, Control, InciCont, numSS, numMat, numDNI, Seccion, 
+porcIRPF, PorcSS, pagobancario, entidad, oficina, controlcta, cuenta, Antiguedad, sexo)
+SELECT codtraba+40000,1,codtraba+40000, 1,1,
+nomtraba, domtraba, 'ALZIRA','VALENCIA',codpobla, telefono, '',
+ fecaltas,NULL,2,1, ssetraba,nromatri ,niftraba, 4,
+porcirpf, 0,1,codbanco, codsucur, digcontr, cuentaba,  fecantig,1 
+FROM system_straba;
+
+
+
+
