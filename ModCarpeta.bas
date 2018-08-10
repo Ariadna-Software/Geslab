@@ -31,7 +31,7 @@ Public Function GetFolder(Titulo As String) As String
      Dim RetPath As String
      Dim Offset As Integer
      'Establece las propiedades del dialogo
-     bInf.hOwner = frmConfig.hWnd
+     bInf.hOwner = frmConfig2.hWnd
      bInf.lpszTitle = Titulo
      bInf.ulFlags = BIF_RETURNONLYFSDIRS
      'Muestra el cuadro de dialogo del browse

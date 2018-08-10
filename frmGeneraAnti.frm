@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
 Begin VB.Form frmGeneraAnti 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Anticipos"
@@ -25,13 +25,17 @@ Begin VB.Form frmGeneraAnti
       MaskColor       =   12632256
       _Version        =   393216
       BeginProperty Images {2C247F25-8591-11D1-B16A-00C0F0283628} 
-         NumListImages   =   2
+         NumListImages   =   3
          BeginProperty ListImage1 {2C247F27-8591-11D1-B16A-00C0F0283628} 
             Picture         =   "frmGeneraAnti.frx":0000
             Key             =   ""
          EndProperty
          BeginProperty ListImage2 {2C247F27-8591-11D1-B16A-00C0F0283628} 
             Picture         =   "frmGeneraAnti.frx":059A
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage3 {2C247F27-8591-11D1-B16A-00C0F0283628} 
+            Picture         =   "frmGeneraAnti.frx":0B34
             Key             =   ""
          EndProperty
       EndProperty
@@ -132,7 +136,7 @@ Begin VB.Form frmGeneraAnti
          Height          =   240
          Index           =   2
          Left            =   9960
-         Picture         =   "frmGeneraAnti.frx":0B34
+         Picture         =   "frmGeneraAnti.frx":320E
          Top             =   180
          Width           =   240
       End
@@ -158,7 +162,7 @@ Begin VB.Form frmGeneraAnti
          Height          =   240
          Index           =   0
          Left            =   900
-         Picture         =   "frmGeneraAnti.frx":0C36
+         Picture         =   "frmGeneraAnti.frx":3310
          Top             =   180
          Width           =   240
       End
@@ -175,7 +179,7 @@ Begin VB.Form frmGeneraAnti
          Height          =   240
          Index           =   1
          Left            =   1860
-         Picture         =   "frmGeneraAnti.frx":0D38
+         Picture         =   "frmGeneraAnti.frx":3412
          Top             =   180
          Width           =   240
       End
@@ -400,7 +404,7 @@ Private WithEvents frmC As frmCal
 Attribute frmC.VB_VarHelpID = -1
 Dim RT As ADODB.Recordset
 Dim SQLAUX As String
-Dim primeravez As Boolean
+Dim PrimeraVez As Boolean
 
 Private Sub cmdGenHoras_Click()
 Dim Seccion As Integer
@@ -613,7 +617,7 @@ Dim inserttmpdatosmes As String
     Else
         i = 7
     End If
-    frmImprimir.opcion = i
+    frmImprimir.Opcion = i
     frmImprimir.NumeroParametros = 1
     frmImprimir.OtrosParametros = SQ
     frmImprimir.Show vbModal
@@ -674,15 +678,15 @@ Private Sub Command1_Click()
 End Sub
 
 Private Sub Form_Activate()
-    If primeravez Then
-        primeravez = False
+    If PrimeraVez Then
+        PrimeraVez = False
         ListView1.Visible = (Antiguedad = 0)
         ListView2.Visible = Not ListView1.Visible
     End If
 End Sub
 
 Private Sub Form_Load()
-    primeravez = True
+    PrimeraVez = True
     If Day(Now) < 16 Then
         Text1(0).Text = Format(CDate("01/" & Month(Now) & "/" & Year(Now)), "dd/mm/yyyy")
         SQLAUX = Format(CDate("15/" & Month(Now) & "/" & Year(Now)), "dd/mm/yyyy")
@@ -743,7 +747,7 @@ End Sub
 
 Private Sub CargaDatosModo1()
 Dim SQL As String
-Dim Rs As ADODB.Recordset
+Dim RS As ADODB.Recordset
 Dim Importe As Currency
 Dim Importe2 As Currency
 Dim itmX As ListItem
@@ -756,7 +760,7 @@ Dim itmX As ListItem
     SQL = SQL & " tmpHoras.HorasT, Categorias.Importe1,[HorasT]*[Importe1] AS T1,"
     SQL = SQL & " tmpHoras.HorasC, Categorias.Importe2,[HorasC]*[Importe2] AS T2 "
     'SQL = SQL & " tmpHoras.HorasE, Categorias.Importe3,[HorasE]*[Importe2] AS T3 "
-    SQL = SQL & " ,Trabajadores.PorcSS, Trabajadores.PorcIRPF, Trabajadores.ControlNomina"
+    SQL = SQL & " ,Trabajadores.PorcSS, Trabajadores.PorcIRPF, Trabajadores.ControlNomina,Trabajadores.Embargado  "
     SQL = SQL & " FROM (Categorias INNER JOIN Trabajadores ON Categorias.IdCategoria = Trabajadores.idCategoria) INNER JOIN tmpHoras ON Trabajadores.IdTrabajador = tmpHoras.trabajador"
     SQL = SQL & " ORDER BY "
     If Option1(0).Value Then
@@ -764,42 +768,42 @@ Dim itmX As ListItem
     Else
         SQL = SQL & "nomtrabajador"
     End If
-    Set Rs = New ADODB.Recordset
-    Rs.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    While Not Rs.EOF
-        Set itmX = ListView1.ListItems.Add(, , Rs.Fields(0))
-        itmX.SubItems(1) = Rs!Nomtrabajador
-        itmX.SubItems(2) = Format(Rs!horast, FormatoImporte)
-        Importe = Round(Rs!Importe1 * Rs!horast, 2)
-        itmX.SubItems(3) = Format(Rs!Importe1, FormatoImporte)
+    Set RS = New ADODB.Recordset
+    RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    While Not RS.EOF
+        Set itmX = ListView1.ListItems.Add(, , RS.Fields(0))
+        itmX.SubItems(1) = RS!Nomtrabajador
+        itmX.SubItems(2) = Format(RS!horast, FormatoImporte)
+        Importe = Round(RS!Importe1 * RS!horast, 2)
+        itmX.SubItems(3) = Format(RS!Importe1, FormatoImporte)
 
         'itmX.SubItems(3) = Format(Importe, FormatoImporte)
         
-        itmX.SubItems(4) = Format(Rs!horasc, FormatoImporte)
+        itmX.SubItems(4) = Format(RS!horasc, FormatoImporte)
         
         
-        If Rs!ControlNomina = 2 Then
+        If RS!ControlNomina = 2 Then
             Importe = 0
 
         Else
-            Importe = Rs!Importe2
+            Importe = RS!Importe2
         End If
         itmX.SubItems(5) = Format(Importe, FormatoImporte)
 
-        itmX.SubItems(6) = Format(Rs!porcSS, FormatoImporte)
-        itmX.SubItems(7) = Format(Rs!porcirpf, FormatoImporte)
+        itmX.SubItems(6) = Format(RS!porcSS, FormatoImporte)
+        itmX.SubItems(7) = Format(RS!porcirpf, FormatoImporte)
         
 
-        Importe = Round(Rs!Importe1 * Rs!horast, 2)
-        itmX.SubItems(3) = Format(Rs!Importe1, FormatoImporte)
+        Importe = Round(RS!Importe1 * RS!horast, 2)
+        itmX.SubItems(3) = Format(RS!Importe1, FormatoImporte)
 
-        Importe = Rs!T1
+        Importe = RS!T1
         itmX.SubItems(11) = Importe
         
-        If Rs!ControlNomina = 2 Then
+        If RS!ControlNomina = 2 Then
             Importe2 = 0
         Else
-            Importe2 = Rs!T2
+            Importe2 = RS!T2
         End If
         itmX.SubItems(12) = Importe2
             
@@ -809,29 +813,40 @@ Dim itmX As ListItem
         itmX.SubItems(13) = Importe
         
         'Iconito en funcion del tipo de control de nominas
-        If Rs!ControlNomina = 2 Then
+        If RS!ControlNomina = 2 Then
             itmX.SmallIcon = 2
         Else
             itmX.SmallIcon = 1
         End If
         
         
-        Importe2 = Rs!porcSS + Rs!porcirpf
+        Importe2 = RS!porcSS + RS!porcirpf
         Importe2 = (Importe2 * Importe) / 100
         Importe2 = Round(Importe2, 2)
         Importe = Importe - Importe2  'BRUTO - IRPF - SS
         itmX.SubItems(8) = Format(Importe, FormatoImporte)   'TOTAL
         'Obtner pagos efectuados en el periodo
-        Importe2 = ObtenerPagosPeriodo(Rs.Fields(0))
+        Importe2 = ObtenerPagosPeriodo(RS.Fields(0))
         itmX.SubItems(9) = Format(Importe2, FormatoImporte)
         'TOTAL A INGRESAR
         Importe2 = Importe - Importe2
-        itmX.SubItems(10) = Format(Importe2, FormatoImporte)
+        
+        
+        If RS!embargado = 1 Then
+            'Esta embargado, NO le pagamos nada de nada
+            itmX.SubItems(10) = 0
+            itmX.SmallIcon = 3
+        Else
+            itmX.SubItems(10) = Format(Importe2, FormatoImporte)
+        End If
             
-        Rs.MoveNext
+                    
+            
+            
+        RS.MoveNext
     Wend
-    Rs.Close
-    Set Rs = Nothing
+    RS.Close
+    Set RS = Nothing
 End Sub
 
 
@@ -875,7 +890,14 @@ Dim Importe2 As Currency
             Aux = SQL & ListView1.ListItems(i).Text & ","
             Aux = Aux & TransformaComasPuntos(CStr(ImporteFormateadoAmoneda(ListView1.ListItems(i).SubItems(10)))) & ",1)"  '1 de anticipo
             
-            conn.Execute Aux
+            
+            'Si es cero NO grabamos nada. Probablemente es que ha sido embargado
+            If ListView1.ListItems(i).SubItems(10) = "0" Then
+                'Embargado, casi seguro
+                'no insertamos
+            Else
+                conn.Execute Aux
+            End If
         Next i
     Else
         'Antiguedad
@@ -970,7 +992,7 @@ End Function
 
 Private Sub CargaDatosAntiguedad()
 Dim SQL As String
-Dim Rs As ADODB.Recordset
+Dim RS As ADODB.Recordset
 Dim Importe As Currency
 Dim Importe2 As Currency
 Dim Importe3 As Currency
@@ -1004,21 +1026,21 @@ Dim itmX As ListItem
     Else
         SQL = SQL & "nomtrabajador"
     End If
-    Set Rs = New ADODB.Recordset
-    Rs.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    While Not Rs.EOF
+    Set RS = New ADODB.Recordset
+    RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    While Not RS.EOF
         'List 2
-        Set itmX = ListView2.ListItems.Add(, , Rs.Fields(0))
-        itmX.SubItems(1) = Rs!Nomtrabajador
-        itmX.SubItems(2) = Format(Rs!horast, FormatoImporte)
+        Set itmX = ListView2.ListItems.Add(, , RS.Fields(0))
+        itmX.SubItems(1) = RS!Nomtrabajador
+        itmX.SubItems(2) = Format(RS!horast, FormatoImporte)
         'Importe 1
         
-        Importe = Round(Rs!Importe1 * Rs!horast, 2)
+        Importe = Round(RS!Importe1 * RS!horast, 2)
         itmX.SubItems(3) = Format(Importe, FormatoImporte)
         
         'Antiguedad
         If Antiguedad = 1 Or Antiguedad = 3 Then
-            Importe2 = Round((Importe * Rs!porcantiguedad) / 100, 2)
+            Importe2 = Round((Importe * RS!porcantiguedad) / 100, 2)
         Else
             Importe2 = 0
         End If
@@ -1027,10 +1049,10 @@ Dim itmX As ListItem
         
         'IRPF y RET sobre la misma BASE, importe2
         
-        Importe2 = Round((Importe * Rs!porcirpf) / 100, 2)
+        Importe2 = Round((Importe * RS!porcirpf) / 100, 2)
         itmX.SubItems(5) = Format(Importe2, FormatoImporte)
         
-        Importe3 = Round((Importe * Rs!porcSS) / 100, 2)
+        Importe3 = Round((Importe * RS!porcSS) / 100, 2)
         itmX.SubItems(6) = Format(Importe3, FormatoImporte)
         
         Importe3 = Importe3 + Importe2
@@ -1039,17 +1061,17 @@ Dim itmX As ListItem
         
         
         'HORAS COMPENSABLES
-        itmX.SubItems(8) = Format(Rs!horasc, FormatoImporte)
-        If Rs!ControlNomina = 2 Then
+        itmX.SubItems(8) = Format(RS!horasc, FormatoImporte)
+        If RS!ControlNomina = 2 Then
             Importe = 0
         Else
-            Importe = Rs!Importe2
+            Importe = RS!Importe2
         End If
-        Importe = Round(Importe * Rs!horasc, 2)
+        Importe = Round(Importe * RS!horasc, 2)
         itmX.SubItems(9) = Format(Importe, FormatoImporte)
         'Antiguedad
         If Antiguedad >= 2 Then
-            Importe2 = Round((Importe * Rs!porcantiguedad) / 100, 2)
+            Importe2 = Round((Importe * RS!porcantiguedad) / 100, 2)
         Else
             Importe2 = 0
         End If
@@ -1058,10 +1080,10 @@ Dim itmX As ListItem
         
         'IRPF y RET sobre la misma BASE, importe2
         
-        Importe2 = Round((Importe * Rs!porcirpf) / 100, 2)
+        Importe2 = Round((Importe * RS!porcirpf) / 100, 2)
         itmX.SubItems(11) = Format(Importe2, FormatoImporte)
         
-        Importe3 = Round((Importe * Rs!porcSS) / 100, 2)
+        Importe3 = Round((Importe * RS!porcSS) / 100, 2)
         itmX.SubItems(12) = Format(Importe3, FormatoImporte)
         
         Importe3 = Importe3 + Importe2
@@ -1070,17 +1092,17 @@ Dim itmX As ListItem
         
             
         'Ciconito en funcion del tipo de control de nominas
-        If Rs!ControlNomina = 2 Then
+        If RS!ControlNomina = 2 Then
             itmX.SmallIcon = 2
         Else
             itmX.SmallIcon = 1
         End If
-        itmX.Tag = DBLet(Rs!Dias, "N")
+        itmX.Tag = DBLet(RS!Dias, "N")
             
-        Rs.MoveNext
+        RS.MoveNext
     Wend
-    Rs.Close
-    Set Rs = Nothing
+    RS.Close
+    Set RS = Nothing
 End Sub
 
 
@@ -1096,7 +1118,7 @@ Private Sub ImprimirAnticiposAlzira()
     SQLAUX = SQLAUX & "Direccion= """ & MiEmpresa.DirEmpresa & "  -   " & MiEmpresa.CodPosEmpresa & " " & MiEmpresa.PobEmpresa & """|"
     SQLAUX = SQLAUX & "FFIN= """ & Text1(1).Text & """|"
     SQLAUX = SQLAUX & "FINI= """ & Text1(0).Text & """|"
-    frmImprimir.opcion = 2
+    frmImprimir.Opcion = 2
     frmImprimir.NumeroParametros = 4
     frmImprimir.OtrosParametros = SQLAUX
     frmImprimir.Show vbModal

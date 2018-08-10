@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{67397AA1-7FB1-11D0-B148-00A0C922E820}#6.0#0"; "msadodc.ocx"
+Object = "{67397AA1-7FB1-11D0-B148-00A0C922E820}#6.0#0"; "MSADODC.OCX"
 Begin VB.Form frmNuevoAn 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Anticpos"
@@ -283,7 +283,7 @@ Private Sub PonerCampos()
     Cad = Cad & RecuperaValor(registro, 1)
     Cad = Cad & " AND Fecha = #" & Format(RecuperaValor(registro, 2), FormatoFecha)
     Cad = Cad & "# AND Tipo =" & RecuperaValor(registro, 3)
-    adodc1.ConnectionString = Conn
+    adodc1.ConnectionString = conn
     adodc1.RecordSource = Cad
     adodc1.Refresh
     If adodc1.Recordset.EOF Then
@@ -317,7 +317,17 @@ Dim Impo As Currency
     DatosOk = False
     B = CompForm(Me)
     If Not B Then Exit Function
-    DatosOk = True
+    
+    
+    
+    
+    'Si esta embargado no dejamos pasar
+    Cad = DevuelveDesdeBD("embargado", "trabajadores", "idtrabajador", Text1(1).Text)
+    If Cad = "1" Then
+        MsgBox "El trabajador esta en situacion de embargo. No puede generar pagos.", vbExclamation
+    Else
+        DatosOk = True
+    End If
 End Function
 
 Private Sub PonFoco(ByRef Obj As Object)
@@ -425,7 +435,7 @@ Dim RT As ADODB.Recordset
     Combo1.Clear
     Cad = "Select * from TipoPago"
     Set RT = New ADODB.Recordset
-    RT.Open Cad, Conn, adOpenForwardOnly, adLockOptimistic, adCmdText
+    RT.Open Cad, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
     While Not RT.EOF
         Combo1.AddItem RT.Fields(1)
         Combo1.ItemData(Combo1.NewIndex) = RT.Fields(0)

@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{67397AA1-7FB1-11D0-B148-00A0C922E820}#6.0#0"; "MSADODC.OCX"
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
 Begin VB.Form frmEmpleados 
    BorderStyle     =   1  'Fixed Single
@@ -16,6 +16,16 @@ Begin VB.Form frmEmpleados
    ScaleHeight     =   6435
    ScaleMode       =   0  'User
    ScaleWidth      =   14943.39
+   Begin VB.CheckBox Check3 
+      Caption         =   "Embargado"
+      Enabled         =   0   'False
+      Height          =   255
+      Left            =   7440
+      TabIndex        =   98
+      Tag             =   "Embargado|N|S|||Trabajadores|Embargado|||"
+      Top             =   2040
+      Width           =   2895
+   End
    Begin VB.Frame FrameHuella 
       Height          =   3195
       Left            =   11280
@@ -1720,7 +1730,7 @@ End Sub
 
 Private Sub BotonEliminar()
 Dim Cad As String
-Dim I
+Dim i
 
 'Ciertas comprobaciones
 If Data1.Recordset.RecordCount = 0 Then Exit Sub
@@ -1728,8 +1738,8 @@ If Data1.Recordset.RecordCount = 0 Then Exit Sub
 Cad = "Seguro que desea eliminar de la BD el registro:"
 Cad = Cad & vbCrLf & "Cod: " & Data1.Recordset.Fields(0)
 Cad = Cad & vbCrLf & "Nombre: " & Data1.Recordset.Fields(5)
-I = MsgBox(Cad, vbQuestion + vbYesNo)
-If I = vbYes Then
+i = MsgBox(Cad, vbQuestion + vbYesNo)
+If i = vbYes Then
     'Hay que eliminar
     On Error GoTo Error2
     Screen.MousePointer = vbHourglass
@@ -1761,12 +1771,12 @@ If I = vbYes Then
                     Data1.Recordset.MoveLast
                     NumRegistro = TotalReg
                     Else
-                        I = 1
-                        While I < NumRegistro
+                        i = 1
+                        While i < NumRegistro
                             Data1.Recordset.MoveNext
-                            I = I + 1
+                            i = i + 1
                         Wend
-                        NumRegistro = I
+                        NumRegistro = i
             End If
             Label2.Caption = NumRegistro & " de " & TotalReg
             Label2.Refresh
@@ -1914,7 +1924,7 @@ If Combo3.ListIndex < 0 Then Exit Sub
     
 Dim RS As ADODB.Recordset
 Dim SQL As String
-Dim I As Integer
+Dim i As Integer
 
     Set RS = New ADODB.Recordset
     SQL = "SELECT * From Secciones " & _
@@ -1923,12 +1933,12 @@ Dim I As Integer
     If Not RS.EOF Then
             'REcorremos le combo de horario hasta situarnos donde queremos
             SQL = ""
-            For I = 0 To Combo1.ListCount - 1
-                If Combo1.ItemData(I) = RS.Fields(3) Then
-                    SQL = I
+            For i = 0 To Combo1.ListCount - 1
+                If Combo1.ItemData(i) = RS.Fields(3) Then
+                    SQL = i
                     Exit For
                 End If
-            Next I
+            Next i
             Combo1.ListIndex = Val(SQL)
             'Control empleados
             Text1(16).Text = RS.Fields(4)
@@ -1970,7 +1980,7 @@ End Sub
 
 
 Private Sub Form_Load()
-Dim I As Integer
+Dim i As Integer
 Dim J As String
 Screen.MousePointer = vbHourglass
 LimpiarCampos
@@ -1986,10 +1996,13 @@ Ordenacion = " ORDER BY IdTrabajador"
 
 'Si la bolsa horas es tipo la de alzira
 'mostraremos los campos de importebruto importe neto
-For I = 31 To 32
-    Label1(I).Visible = Not MiEmpresa.NominaAutomatica
-    Text1(I).Visible = Not MiEmpresa.NominaAutomatica
+For i = 31 To 32
+    Label1(i).Visible = Not MiEmpresa.NominaAutomatica
+    Text1(i).Visible = Not MiEmpresa.NominaAutomatica
 Next
+
+
+Check3.Visible = MiEmpresa.QueEmpresa = 0
 
 If Not MiEmpresa.NominaAutomatica Then
     'Hago el cuadrado mas grande
@@ -2050,7 +2063,7 @@ End Sub
 
 
 Private Sub LimpiarCampos()
-Dim I
+Dim i
 On Error Resume Next
 Limpiar Me
 Text2.Text = ""
@@ -2242,7 +2255,7 @@ End Sub
 
 Private Sub Text1_LostFocus(Index As Integer)
 Dim Cad As String
-Dim AUX As String
+Dim Aux As String
 
 If Modo = 1 Then
     Text1(Index).BackColor = vbWhite
@@ -2264,22 +2277,22 @@ If Modo > 2 Then
         ElseIf Index = 29 Then
                 Text1(29).Text = Right(String(10, "0") & Me.Text1(29).Text, 10)
                 'Formateamos
-                AUX = Right("0000" & Me.Text1(30).Text, 4) & Right("0000" & Me.Text1(27).Text, 4)
-                AUX = AUX & Me.Text1(28).Text & Text1(29).Text
+                Aux = Right("0000" & Me.Text1(30).Text, 4) & Right("0000" & Me.Text1(27).Text, 4)
+                Aux = Aux & Me.Text1(28).Text & Text1(29).Text
                 
-                If Len(AUX) = 20 Then
+                If Len(Aux) = 20 Then
                     'OK. Calculamos el IBAN
                     
                     
                     If Text1(33).Text = "" Then
                         'NO ha puesto IBAN
-                        If DevuelveIBAN2("ES", AUX, Cad) Then Text1(33).Text = "ES" & Cad
+                        If DevuelveIBAN2("ES", Aux, Cad) Then Text1(33).Text = "ES" & Cad
                     Else
                         Cad = CStr(Mid(Text1(33).Text, 1, 2))
-                        If DevuelveIBAN2(CStr(Cad), AUX, AUX) Then
-                            If Mid(Text1(33).Text, 3) <> AUX Then
+                        If DevuelveIBAN2(CStr(Cad), Aux, Aux) Then
+                            If Mid(Text1(33).Text, 3) <> Aux Then
                                 
-                                MsgBox "Codigo IBAN distinto del calculado [" & Cad & AUX & "]", vbExclamation
+                                MsgBox "Codigo IBAN distinto del calculado [" & Cad & Aux & "]", vbExclamation
                                 'Text1(49).Text = "ES" & SQL
                             End If
                         End If
@@ -2313,14 +2326,14 @@ If Text1(kCampo).Text = "" Then
 End If
 '------------------------------------------------
 'Prueba de pascual jajajaja
-Dim c1 As String   'el nombre del campo
+Dim C1 As String   'el nombre del campo
 Dim Tipo As Long
 Dim Operacion As String
 Dim Valor As String
 Dim aux1
 
-c1 = Data1.Recordset.Fields(kCampo).Name
-If c1 = "IdEmpresa" Then c1 = "Trabajadores.IdEmpresa"
+C1 = Data1.Recordset.Fields(kCampo).Name
+If C1 = "IdEmpresa" Then C1 = "Trabajadores.IdEmpresa"
 
 Tipo = DevuelveTipo2(Data1.Recordset.Fields(kCampo).Type)
 'Comprobacion numerica
@@ -2342,7 +2355,7 @@ Case 1
     '    MsgBox "Debe de ser numérico.", vbExclamation
     '    Exit Sub
     'End If
-    CadB = c1 & " " & Operacion & " " & Valor
+    CadB = C1 & " " & Operacion & " " & Valor
 Case 2
     'Vemos si la cadena tiene un Falso o False
     If InStr(1, UCase(Text1(kCampo).Text), "F") Then
@@ -2350,9 +2363,9 @@ Case 2
         Else
         aux1 = "True"
     End If
-    CadB = c1 & " = " & aux1
+    CadB = C1 & " = " & aux1
 Case 3
-    CadB = c1 & " like '%" & Valor & "%'"
+    CadB = C1 & " like '%" & Valor & "%'"
 Case 4
 
 Case 5
@@ -2431,7 +2444,7 @@ End Sub
 
 
 Private Sub PonerCampos()
-Dim I As Integer
+Dim i As Integer
 Dim Cad As String
 Dim J As Integer
 
@@ -2452,41 +2465,41 @@ Text2.Text = DevuelveTextoIncidencia(Data1.Recordset!incicont)
 
 'Ponemos los valores de los combos
 J = 0
-For I = 0 To Combo2.ListCount - 1
-    If Combo2.ItemData(I) = Data1.Recordset.Fields(3) Then
-        J = I
+For i = 0 To Combo2.ListCount - 1
+    If Combo2.ItemData(i) = Data1.Recordset.Fields(3) Then
+        J = i
         Exit For
     End If
-Next I
+Next i
 Combo2.ListIndex = J
 'ahora el combo2
 J = 0
-For I = 0 To Combo1.ListCount - 1
-    If Combo1.ItemData(I) = Data1.Recordset.Fields(4) Then
-        J = I
+For i = 0 To Combo1.ListCount - 1
+    If Combo1.ItemData(i) = Data1.Recordset.Fields(4) Then
+        J = i
         Exit For
     End If
-Next I
+Next i
 Combo1.ListIndex = J
 
 'ahora el combo de SECCION
 J = 0
-For I = 0 To Combo3.ListCount - 1
-    If Combo3.ItemData(I) = Data1.Recordset.Fields(22) Then
-        J = I
+For i = 0 To Combo3.ListCount - 1
+    If Combo3.ItemData(i) = Data1.Recordset.Fields(22) Then
+        J = i
         Exit For
     End If
-Next I
+Next i
 Combo3.ListIndex = J
 
 If MiEmpresa.LlevaLaboral Then
     J = -1
-    For I = 0 To Combo4.ListCount - 1
-        If Combo4.ItemData(I) = DBLet(Data1.Recordset.Fields(26), "N") Then
-            J = I
+    For i = 0 To Combo4.ListCount - 1
+        If Combo4.ItemData(i) = DBLet(Data1.Recordset.Fields(26), "N") Then
+            J = i
             Exit For
         End If
-    Next I
+    Next i
 Else
     J = -1
 End If
@@ -2586,7 +2599,7 @@ End Sub
 
 'AGRUPAR PARA QUE NO HAGA TANTAS COMPARACIONES
 Private Sub PonerModo(Kmodo As Integer)
-Dim I As Integer
+Dim i As Integer
 Dim B As Boolean
 Dim T As TextBox
 If Modo = 1 Then
@@ -2625,13 +2638,17 @@ Me.Label8(0).Visible = B
 Me.Label8(1).Visible = B
 Me.Check2.Enabled = Modo = 1 Or Modo > 2
 
+
+If Check3.Visible Then Me.Check3.Enabled = Modo = 1 Or Modo > 2
+    
+    
 'Si no estamos buscando
 B = Kmodo = 1
 'Si estamos ins o modif
     B = (Kmodo >= 3)
-    For I = 0 To Image2.Count - 1
-        Image2(I).Visible = B
-    Next I
+    For i = 0 To Image2.Count - 1
+        Image2(i).Visible = B
+    Next i
     Image2(5).Visible = False
     Combo1.Locked = Not B
     Combo2.Locked = Not B
@@ -2648,7 +2665,7 @@ End Sub
 Private Function DatosOk() As Boolean
 Dim RS As ADODB.Recordset
 Dim Cad As String
-Dim I As Integer
+Dim i As Integer
 
 DatosOk = False
 
@@ -2677,8 +2694,8 @@ End If
 'Cuenta bancaria
 If Check1.Value = 1 Then
     Cad = Text1(27).Text & Text1(28).Text & Text1(29).Text & Text1(30).Text
-    I = Len(Cad)
-    If I < 10 Then
+    i = Len(Cad)
+    If i < 10 Then
         Cad = "Deberia escribir la cuenta bancaria para el poder efectuar los pagos." & vbCrLf & "     ¿Desea  continuar?"
         If MsgBox(Cad, vbExclamation + vbYesNoCancel) <> vbYes Then Exit Function
     End If
@@ -2775,17 +2792,17 @@ End Sub
 Private Sub CargaCombos()
 Dim RS As ADODB.Recordset
 Dim Cad As String
-Dim I As Integer
+Dim i As Integer
 'Horarios
 Combo1.Clear
 Cad = "Select IdHorario,NomHorario from Horarios order by nomhorario"
 Set RS = New ADODB.Recordset
 RS.Open Cad, conn, , , adCmdText
-I = 0
+i = 0
 While Not RS.EOF
     Combo1.AddItem RS.Fields(1) '& " - " & rs.Fields(0)
-    Combo1.ItemData(I) = RS.Fields(0)
-    I = I + 1
+    Combo1.ItemData(i) = RS.Fields(0)
+    i = i + 1
     RS.MoveNext
 Wend
 RS.Close
@@ -2796,11 +2813,11 @@ Combo2.Clear
 Cad = "Select IdCategoria,NomCategoria from Categorias order by nomCategoria"
 Set RS = New ADODB.Recordset
 RS.Open Cad, conn, , , adCmdText
-I = 0
+i = 0
 While Not RS.EOF
     Combo2.AddItem RS.Fields(1) '& " - " & rs.Fields(0)
-    Combo2.ItemData(I) = RS.Fields(0)
-    I = I + 1
+    Combo2.ItemData(i) = RS.Fields(0)
+    i = i + 1
     RS.MoveNext
 Wend
 RS.Close
@@ -2809,11 +2826,11 @@ RS.Close
     Cad = "Select IdSeccion,Nombre from Secciones where IdEmpresa=1 order by Nombre"
     Set RS = New ADODB.Recordset
     RS.Open Cad, conn, , , adCmdText
-    I = 0
+    i = 0
     While Not RS.EOF
         Combo3.AddItem RS.Fields(1) '& " - " & rs.Fields(0)
-        Combo3.ItemData(I) = RS.Fields(0)
-        I = I + 1
+        Combo3.ItemData(i) = RS.Fields(0)
+        i = i + 1
         RS.MoveNext
     Wend
     RS.Close
@@ -2824,12 +2841,12 @@ RS.Close
 If MiEmpresa.LlevaLaboral Then
     Cad = "Select IdContrato,DescContrato from tipocontrato"
     RS.Open Cad, conn, , , adCmdText
-    I = 0
+    i = 0
     Combo4.Clear
     While Not RS.EOF
         Combo4.AddItem RS.Fields(1) '& " - " & rs.Fields(0)
-        Combo4.ItemData(I) = RS.Fields(0)
-        I = I + 1
+        Combo4.ItemData(i) = RS.Fields(0)
+        i = i + 1
         RS.MoveNext
     Wend
     RS.Close
@@ -2933,10 +2950,10 @@ End Sub
 
 
 Private Sub DespalzamientoVisible(bol As Boolean)
-Dim I
-For I = 14 To 17
-    Toolbar1.Buttons(I).Visible = bol
-Next I
+Dim i
+For i = 14 To 17
+    Toolbar1.Buttons(i).Visible = bol
+Next i
 End Sub
 
 Private Sub HabilitarMenu()

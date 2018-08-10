@@ -704,7 +704,7 @@ Dim Opc As Integer
 
 
 Private Sub cmdInforme_Click()
-Dim i As Integer
+Dim I As Integer
 Dim Cad As String
 Dim Ordenacion As Byte
 Dim Formula
@@ -713,9 +713,9 @@ Dim Etiq As String
 On Error GoTo EInf
 'Cadena de etiquetitas a blancos
 NCampos = 0
-For i = 0 To 5
-    vLabel(i) = ""
-Next i
+For I = 0 To 5
+    vLabel(I) = ""
+Next I
 If Opcion = 1 And Me.Option1(3).Value Then
     RealizarHORAS  'Este es un informe paralelo
     Exit Sub
@@ -915,20 +915,20 @@ End Select
                             
                 
             Etiq = ""
-            For i = 0 To 5
-                If vLabel(i) <> "" Then
-                   Etiq = vLabel(i)
-                   vLabel(i) = "Campo" & i + 1 & "= """ & Etiq & """ "
+            For I = 0 To 5
+                If vLabel(I) <> "" Then
+                   Etiq = vLabel(I)
+                   vLabel(I) = "Campo" & I + 1 & "= """ & Etiq & """ "
                 End If
-            Next i
+            Next I
             NParam = 0
             CadParam = ""
-            For i = 0 To 5
-                If vLabel(i) <> "" Then
-                    CadParam = CadParam & vLabel(i) & "|"
+            For I = 0 To 5
+                If vLabel(I) <> "" Then
+                    CadParam = CadParam & vLabel(I) & "|"
                     NParam = NParam + 1
                 End If
-            Next i
+            Next I
             
             .OtrosParametros = CadParam
             .NumeroParametros = NParam
@@ -1111,24 +1111,24 @@ Set frmF = Nothing
 End Sub
 
 Private Function DevuelveOrdenacion() As Byte
-Dim i As Integer
+Dim I As Integer
 Select Case Opcion
 Case 1
     'PRESENCIA
-    For i = 0 To 2
-        If Option1(i).Value Then
-            DevuelveOrdenacion = i
+    For I = 0 To 2
+        If Option1(I).Value Then
+            DevuelveOrdenacion = I
             Exit Function
         End If
-    Next i
+    Next I
 Case 2
     'TRABAJADORES
-    For i = 0 To 1
-        If optTrab(i).Value Then
-            DevuelveOrdenacion = i
+    For I = 0 To 1
+        If optTrab(I).Value Then
+            DevuelveOrdenacion = I
             Exit Function
         End If
-    Next i
+    Next I
 End Select
 DevuelveOrdenacion = 1
 End Function
@@ -1136,7 +1136,7 @@ End Function
 
 
 Private Function DevuelveCadenaSQL() As String
-Dim i As Integer
+Dim I As Integer
 Dim Cad As String
 Dim Formula As String
 Dim Nexo As String
@@ -1153,44 +1153,44 @@ Nexo = ""
 'Empresa
 v1 = 0
 v2 = 999999999
-i = 0
+I = 0
 CADENA = ""
 Cad = "Empresa desde "
-txtEmpresa(i).Text = Trim(txtEmpresa(i).Text)
-If txtEmpresa(i).Text <> "" Then
-    If Not IsNumeric(txtEmpresa(i).Text) Then
+txtEmpresa(I).Text = Trim(txtEmpresa(I).Text)
+If txtEmpresa(I).Text <> "" Then
+    If Not IsNumeric(txtEmpresa(I).Text) Then
         MsgBox Cad & " NO es un fecha correcta.", vbExclamation
         Exit Function
         Else
-            v1 = CLng(txtEmpresa(i).Text)
+            v1 = CLng(txtEmpresa(I).Text)
             If v1 < 0 Then
                 MsgBox Cad & " NO es correcta.", vbExclamation
                 Exit Function
             End If
             Formula = Formula & Nexo & "{" & NombreTabla & ".IdEmpresa} >= " & v1
             Nexo = " AND "
-            CADENA = CADENA & " desde " & Format(txtEmpresa(i).Text, "00000")
+            CADENA = CADENA & " desde " & Format(txtEmpresa(I).Text, "00000")
     End If
 End If
 
 
-i = 2
+I = 2
 CADENA = ""
 Cad = "Empresa hasta "
-txtEmpresa(i).Text = Trim(txtEmpresa(i).Text)
-If txtEmpresa(i).Text <> "" Then
-    If Not IsNumeric(txtEmpresa(i).Text) Then
+txtEmpresa(I).Text = Trim(txtEmpresa(I).Text)
+If txtEmpresa(I).Text <> "" Then
+    If Not IsNumeric(txtEmpresa(I).Text) Then
         MsgBox Cad & " NO es un número correcta.", vbExclamation
         Exit Function
         Else
-            v2 = CLng(txtEmpresa(i).Text)
+            v2 = CLng(txtEmpresa(I).Text)
             If v2 < 0 Then
                 MsgBox Cad & " NO es correcta.", vbExclamation
                 Exit Function
             End If
             Formula = Formula & Nexo & "{" & NombreTabla & ".IdEmpresa} <= " & v2
             Nexo = " AND "
-            CADENA = CADENA & " desde " & Format(txtEmpresa(i).Text, "00000")
+            CADENA = CADENA & " desde " & Format(txtEmpresa(I).Text, "00000")
     End If
 End If
 
@@ -1204,40 +1204,40 @@ End If
 v1 = "01/01/1900"
 v2 = "31/12/2800"
 'fecha desde
-i = 0
+I = 0
 CADENA = ""
 Cad = "Fecha desde "
-txtFecha(i).Text = Trim(txtFecha(i).Text)
-If txtFecha(i).Text <> "" Then
-    If Not IsDate(txtFecha(i).Text) Then
+txtFecha(I).Text = Trim(txtFecha(I).Text)
+If txtFecha(I).Text <> "" Then
+    If Not IsDate(txtFecha(I).Text) Then
         MsgBox Cad & " NO es un fecha correcta.", vbExclamation
         Exit Function
         Else
-            v1 = CDate(txtFecha(i).Text)
+            v1 = CDate(txtFecha(I).Text)
             'Formula = Formula & Nexo & "{" & NombreTabla & ".Fecha} >= #" & Format(txtFecha(i).Text, "yyyy/mm/dd") & "#"
             'DateTime (2006, 07, 01,00, 00, 00)
-            Formula = Formula & Nexo & "{" & NombreTabla & ".Fecha} >= DateTime(" & Year(CDate(txtFecha(i).Text)) & "," & Month(CDate(txtFecha(i).Text)) & "," & Day(CDate(CDate(txtFecha(i).Text))) & ",00,00,00)"
+            Formula = Formula & Nexo & "{" & NombreTabla & ".Fecha} >= DateTime(" & Year(CDate(txtFecha(I).Text)) & "," & Month(CDate(txtFecha(I).Text)) & "," & Day(CDate(CDate(txtFecha(I).Text))) & ",00,00,00)"
             Nexo = " AND "
-            CADENA = CADENA & " desde " & Format(txtFecha(i).Text, "dd/mm/yyyy")
+            CADENA = CADENA & " desde " & Format(txtFecha(I).Text, "dd/mm/yyyy")
     End If
 End If
 'fecha hasta
-i = 1
+I = 1
 Cad = "Fecha hasta "
-txtFecha(i).Text = Trim(txtFecha(i).Text)
-If txtFecha(i).Text <> "" Then
-    If Not IsDate(txtFecha(i).Text) Then
+txtFecha(I).Text = Trim(txtFecha(I).Text)
+If txtFecha(I).Text <> "" Then
+    If Not IsDate(txtFecha(I).Text) Then
         MsgBox Cad & " NO es un fecha correcta.", vbExclamation
         Exit Function
         Else
-            v2 = CDate(txtFecha(i).Text)
+            v2 = CDate(txtFecha(I).Text)
             'Formula = Formula & Nexo & "{" & NombreTabla & ".Fecha} <=#" & Format(txtFecha(i).Text, "yyyy/mm/dd") & "#"
-            Formula = Formula & Nexo & "{" & NombreTabla & ".Fecha} <= DateTime(" & Year(CDate(txtFecha(i).Text)) & "," & Month(CDate(txtFecha(i).Text)) & "," & Day(CDate(CDate(txtFecha(i).Text))) & ",00,00,00)"
+            Formula = Formula & Nexo & "{" & NombreTabla & ".Fecha} <= DateTime(" & Year(CDate(txtFecha(I).Text)) & "," & Month(CDate(txtFecha(I).Text)) & "," & Day(CDate(CDate(txtFecha(I).Text))) & ",00,00,00)"
             Nexo = " AND "
-            CADENA = CADENA & " hasta " & Format(txtFecha(i).Text, "dd/mm/yyyy")
+            CADENA = CADENA & " hasta " & Format(txtFecha(I).Text, "dd/mm/yyyy")
     End If
 End If
-Dim Aux
+Dim AUX
 v1 = Format(v1, "yyyy/mm/dd")
 v2 = Format(v2, "yyyy/mm/dd")
 If v1 > v2 Then
@@ -1256,35 +1256,35 @@ If CADENA <> "" Then
 End If
 '-------------------------------------------------------------------
 'Empleado
-i = 0
+I = 0
 v1 = 0
 v2 = 99999999
-txtEmpleado(i).Text = Trim(txtEmpleado(i).Text)
+txtEmpleado(I).Text = Trim(txtEmpleado(I).Text)
 Cad = "Empleado desde "
-If txtEmpleado(i).Text <> "" Then
-    If Not IsNumeric(txtEmpleado(i).Text) Then
+If txtEmpleado(I).Text <> "" Then
+    If Not IsNumeric(txtEmpleado(I).Text) Then
         MsgBox Cad & " NO es numérico.", vbExclamation
         Exit Function
         Else
-            v1 = CLng(txtEmpleado(i).Text)
-            Formula = Formula & Nexo & "{" & NombreTabla & ".idTrabajador} >=" & txtEmpleado(i).Text
+            v1 = CLng(txtEmpleado(I).Text)
+            Formula = Formula & Nexo & "{" & NombreTabla & ".idTrabajador} >=" & txtEmpleado(I).Text
             Nexo = " AND "
-            CADENA = CADENA & " desde " & Format(txtEmpleado(i).Text, "00000")
+            CADENA = CADENA & " desde " & Format(txtEmpleado(I).Text, "00000")
     End If
 End If
 'Empleado
-i = 2
+I = 2
 Cad = "Empleado hasta "
-txtEmpleado(i).Text = Trim(txtEmpleado(i).Text)
-If txtEmpleado(i).Text <> "" Then
-    If Not IsNumeric(txtEmpleado(i).Text) Then
+txtEmpleado(I).Text = Trim(txtEmpleado(I).Text)
+If txtEmpleado(I).Text <> "" Then
+    If Not IsNumeric(txtEmpleado(I).Text) Then
         MsgBox Cad & " NO es numérico.", vbExclamation
         Exit Function
         Else
-            v2 = CLng(txtEmpleado(i).Text)
-            Formula = Formula & Nexo & "{" & NombreTabla & ".idTrabajador} <=" & txtEmpleado(i).Text
+            v2 = CLng(txtEmpleado(I).Text)
+            Formula = Formula & Nexo & "{" & NombreTabla & ".idTrabajador} <=" & txtEmpleado(I).Text
             Nexo = " AND "
-            CADENA = CADENA & " hasta " & Format(txtEmpleado(i).Text, "00000")
+            CADENA = CADENA & " hasta " & Format(txtEmpleado(I).Text, "00000")
     End If
 End If
 
@@ -1303,7 +1303,7 @@ End If
 
 
 
-i = 0
+I = 0
 v1 = 0
 v2 = 99999999
 
@@ -1312,30 +1312,30 @@ v2 = 99999999
     
             'SECCION
             Cad = "Seccion desde "
-            txtIncidencia(i).Text = Trim(txtIncidencia(i).Text)
-            If txtIncidencia(i).Text <> "" Then
-                If Not IsNumeric(txtIncidencia(i).Text) Then
+            txtIncidencia(I).Text = Trim(txtIncidencia(I).Text)
+            If txtIncidencia(I).Text <> "" Then
+                If Not IsNumeric(txtIncidencia(I).Text) Then
                     MsgBox Cad & " NO es numérico.", vbExclamation
                     Exit Function
                     Else
-                        v1 = CLng(txtIncidencia(i).Text)
-                        Formula = Formula & Nexo & "{" & NombreTabla & ".idSeccion} >=" & txtIncidencia(i).Text
+                        v1 = CLng(txtIncidencia(I).Text)
+                        Formula = Formula & Nexo & "{" & NombreTabla & ".idSeccion} >=" & txtIncidencia(I).Text
                         Nexo = " AND "
-                        CADENA = CADENA & " desde " & Format(txtIncidencia(i).Text, "00000")
+                        CADENA = CADENA & " desde " & Format(txtIncidencia(I).Text, "00000")
                 End If
             End If
             'Incidencias
-            i = 2
+            I = 2
             Cad = "Incidencia hasta "
-            If txtIncidencia(i).Text <> "" Then
-                If Not IsNumeric(txtIncidencia(i).Text) Then
+            If txtIncidencia(I).Text <> "" Then
+                If Not IsNumeric(txtIncidencia(I).Text) Then
                     MsgBox Cad & " NO es numérico.", vbExclamation
                     Exit Function
                     Else
-                        v2 = CLng(txtIncidencia(i).Text)
-                        Formula = Formula & Nexo & "{" & NombreTabla & ".idSeccion} <=" & txtIncidencia(i).Text
+                        v2 = CLng(txtIncidencia(I).Text)
+                        Formula = Formula & Nexo & "{" & NombreTabla & ".idSeccion} <=" & txtIncidencia(I).Text
                         Nexo = " AND "
-                        CADENA = CADENA & " hasta " & Format(txtIncidencia(i).Text, "00000")
+                        CADENA = CADENA & " hasta " & Format(txtIncidencia(I).Text, "00000")
                 End If
             End If
             
@@ -1356,30 +1356,30 @@ v2 = 99999999
         'INCIDENCIA
     
         Cad = "Incidencia desde "
-        txtIncidencia(i).Text = Trim(txtIncidencia(i).Text)
-        If txtIncidencia(i).Text <> "" Then
-            If Not IsNumeric(txtIncidencia(i).Text) Then
+        txtIncidencia(I).Text = Trim(txtIncidencia(I).Text)
+        If txtIncidencia(I).Text <> "" Then
+            If Not IsNumeric(txtIncidencia(I).Text) Then
                 MsgBox Cad & " NO es numérico.", vbExclamation
                 Exit Function
                 Else
-                    v1 = CLng(txtIncidencia(i).Text)
-                    Formula = Formula & Nexo & "{" & NombreTabla & ".idInci} >=" & txtIncidencia(i).Text
+                    v1 = CLng(txtIncidencia(I).Text)
+                    Formula = Formula & Nexo & "{" & NombreTabla & ".idInci} >=" & txtIncidencia(I).Text
                     Nexo = " AND "
-                    CADENA = CADENA & " desde " & Format(txtIncidencia(i).Text, "00000")
+                    CADENA = CADENA & " desde " & Format(txtIncidencia(I).Text, "00000")
             End If
         End If
         'Incidencias
-        i = 2
+        I = 2
         Cad = "Incidencia hasta "
-        If txtIncidencia(i).Text <> "" Then
-            If Not IsNumeric(txtIncidencia(i).Text) Then
+        If txtIncidencia(I).Text <> "" Then
+            If Not IsNumeric(txtIncidencia(I).Text) Then
                 MsgBox Cad & " NO es numérico.", vbExclamation
                 Exit Function
                 Else
-                    v2 = CLng(txtIncidencia(i).Text)
-                    Formula = Formula & Nexo & "{" & NombreTabla & ".idInci} <=" & txtIncidencia(i).Text
+                    v2 = CLng(txtIncidencia(I).Text)
+                    Formula = Formula & Nexo & "{" & NombreTabla & ".idInci} <=" & txtIncidencia(I).Text
                     Nexo = " AND "
-                    CADENA = CADENA & " hasta " & Format(txtIncidencia(i).Text, "00000")
+                    CADENA = CADENA & " hasta " & Format(txtIncidencia(I).Text, "00000")
             End If
         End If
         
@@ -1421,7 +1421,7 @@ Private Function DevuelveCadenaSQLTrab() As String
 Dim RsBase As ADODB.Recordset
 Dim RS As ADODB.Recordset
 Dim RT As ADODB.Recordset
-Dim i As Integer
+Dim I As Integer
 Dim CadenaSQL As String
 Dim CADENA As String
 Dim Cad As String
@@ -1463,15 +1463,15 @@ RT.LockType = adLockOptimistic
 RT.Open "Select * from tmpPresencia", conn, , , adCmdText
 
 Set RS = New ADODB.Recordset
-i = 1
+I = 1
 While Not RsBase.EOF
     RT.AddNew
     Cad = "Select IdInci,Hora from EntradaMarcajes WHERE IdMarcaje=" & RsBase!Entrada
     Cad = Cad & " ORDER BY Hora"
     RS.Open Cad, conn, , , adCmdText
-    RT!Id = i
+    RT!Id = I
     RT!NomEmpresa = RsBase!NomEmpresa
-    RT!Nomtrabajador = RsBase!Nomtrabajador
+    RT!nomtrabajador = RsBase!nomtrabajador
     RT!Fecha = RsBase!Fecha
     C = 1
     CADENA = ""
@@ -1517,7 +1517,7 @@ While Not RsBase.EOF
     RT.Update
     RS.Close
     RsBase.MoveNext
-    i = i + 1
+    I = I + 1
 Wend
 RT.Close
 RsBase.Close
@@ -1533,20 +1533,20 @@ End Function
 
 
 Private Sub LimpiarCampos()
-Dim i As Integer
+Dim I As Integer
  
-For i = 0 To 3
-    txtEmpleado(i).Text = ""
-Next i
-For i = 0 To 3
-    txtEmpresa(i).Text = ""
-Next i
-For i = 0 To 3
-    txtIncidencia(i).Text = ""
-Next i
-For i = 0 To 1
-    Me.txtFecha(i).Text = ""
-Next i
+For I = 0 To 3
+    txtEmpleado(I).Text = ""
+Next I
+For I = 0 To 3
+    txtEmpresa(I).Text = ""
+Next I
+For I = 0 To 3
+    txtIncidencia(I).Text = ""
+Next I
+For I = 0 To 1
+    Me.txtFecha(I).Text = ""
+Next I
 End Sub
 
 
@@ -1754,7 +1754,7 @@ End Sub
 Private Sub RealizarHORAS()
 Dim Cad As String
 Dim Etiq As String
-Dim i As Integer
+Dim I As Integer
 
 Screen.MousePointer = vbHourglass
 Cad = DevuelveCadenaSQLTrab
@@ -1762,20 +1762,20 @@ If Cad <> "###" Then
     'Mostrar el informe
     'CR1.Connect = Conn
     Etiq = ""
-    For i = 0 To 5
-        If vLabel(i) <> "" Then
-           Etiq = vLabel(i)
-           vLabel(i) = "Campo" & i + 1 & "= """ & Etiq & """ "
+    For I = 0 To 5
+        If vLabel(I) <> "" Then
+           Etiq = vLabel(I)
+           vLabel(I) = "Campo" & I + 1 & "= """ & Etiq & """ "
         End If
-    Next i
+    Next I
     CadParam = ""
     NParam = 0
-    For i = 0 To 5
-        If vLabel(i) <> "" Then
-            CadParam = CadParam & vLabel(i) & "|"
+    For I = 0 To 5
+        If vLabel(I) <> "" Then
+            CadParam = CadParam & vLabel(I) & "|"
             NParam = NParam + 1
         End If
-    Next i
+    Next I
     With frmImprimir
         .Opcion = 127
         .NumeroParametros = NParam
@@ -1801,13 +1801,13 @@ Dim AntHora As Long
 Dim mH As CHorarios
 Dim mEm As CEmpresas
 Dim C As Long
-Dim Aux As String
+Dim AUX As String
 
 'Borramos la tabla temporal
 conn.Execute "Delete * from HorasTrabajadas"
 
 'Obtenemos los subqueries
-ObtenCadenaSql Aux
+ObtenCadenaSql AUX
 
 mSql = "SELECT Secciones.Nombre, Empresas.idEmpresa, Marcajes.Fecha, "
 mSql = mSql & " Trabajadores.NomTrabajador, Marcajes.HorasTrabajadas, "
@@ -1818,7 +1818,7 @@ mSql = mSql & " Empresas.IdEmpresa = Trabajadores.IdEmpresa AND "
 mSql = mSql & " Trabajadores.IdTrabajador = Marcajes.idTrabajador "
 
 'Condiciones de empresa y demas
-If Aux <> "" Then mSql = mSql & " " & Aux
+If AUX <> "" Then mSql = mSql & " " & AUX
 
 mSql = mSql & " ORDER BY Marcajes.Fecha,Trabajadores.IdHorario"
 
@@ -1887,7 +1887,7 @@ End Sub
 
 
 Private Sub ObtenCadenaSql(ByRef CadenaSQL As String)
-Dim i As Integer
+Dim I As Integer
 Dim C As Integer
 Dim Cad As String
 Dim CADENA As String
@@ -1898,27 +1898,27 @@ Dim CADENA As String
 CadenaSQL = ""
 'Limpiamos los tag y ahora
 'fecha desde
-i = 0
+I = 0
 Cad = "Fecha desde "
-If txtFecha(i).Text <> "" Then
-    If Not IsDate(txtFecha(i).Text) Then
+If txtFecha(I).Text <> "" Then
+    If Not IsDate(txtFecha(I).Text) Then
         MsgBox Cad & " NO es un fecha correcta.", vbExclamation
         Exit Sub
         Else
-            CadenaSQL = CadenaSQL & " AND Fecha >=#" & Format(txtFecha(i).Text, "yyyy/mm/dd") & "#"
-            CADENA = CADENA & " desde " & Format(txtFecha(i).Text, "dd/mm/yyyy")
+            CadenaSQL = CadenaSQL & " AND Fecha >=#" & Format(txtFecha(I).Text, "yyyy/mm/dd") & "#"
+            CADENA = CADENA & " desde " & Format(txtFecha(I).Text, "dd/mm/yyyy")
     End If
 End If
 'fecha hasta
-i = 1
+I = 1
 Cad = "Fecha hasta "
-If txtFecha(i).Text <> "" Then
-    If Not IsDate(txtFecha(i).Text) Then
+If txtFecha(I).Text <> "" Then
+    If Not IsDate(txtFecha(I).Text) Then
         MsgBox Cad & " NO es un fecha correcta.", vbExclamation
         Exit Sub
         Else
-            CadenaSQL = CadenaSQL & " AND Fecha <=#" & Format(txtFecha(i).Text, "yyyy/mm/dd") & "#"
-            CADENA = CADENA & " hasta " & Format(txtFecha(i).Text, "dd/mm/yyyy")
+            CadenaSQL = CadenaSQL & " AND Fecha <=#" & Format(txtFecha(I).Text, "yyyy/mm/dd") & "#"
+            CADENA = CADENA & " hasta " & Format(txtFecha(I).Text, "dd/mm/yyyy")
     End If
 End If
 
@@ -1933,27 +1933,27 @@ End If
 
 
 'Empleado
-i = 0
+I = 0
 Cad = "Empleado desde "
-If txtEmpleado(i).Text <> "" Then
-    If Not IsNumeric(txtEmpleado(i).Text) Then
+If txtEmpleado(I).Text <> "" Then
+    If Not IsNumeric(txtEmpleado(I).Text) Then
         MsgBox Cad & " NO es numérico.", vbExclamation
         Exit Sub
         Else
-            CadenaSQL = CadenaSQL & " AND Trabajadores.idTrabajador >=" & txtEmpleado(i).Text
-            CADENA = CADENA & " desde " & Format(txtEmpleado(i).Text, "00000")
+            CadenaSQL = CadenaSQL & " AND Trabajadores.idTrabajador >=" & txtEmpleado(I).Text
+            CADENA = CADENA & " desde " & Format(txtEmpleado(I).Text, "00000")
     End If
 End If
 'Empleado
-i = 2
+I = 2
 Cad = "Empleado hasta "
-If txtEmpleado(i).Text <> "" Then
-    If Not IsNumeric(txtEmpleado(i).Text) Then
+If txtEmpleado(I).Text <> "" Then
+    If Not IsNumeric(txtEmpleado(I).Text) Then
         MsgBox Cad & " NO es numérico.", vbExclamation
         Exit Sub
         Else
-            CadenaSQL = CadenaSQL & " AND Trabajadores.idTrabajador <=" & txtEmpleado(i).Text
-            CADENA = CADENA & " hasta " & Format(txtEmpleado(i).Text, "00000")
+            CadenaSQL = CadenaSQL & " AND Trabajadores.idTrabajador <=" & txtEmpleado(I).Text
+            CADENA = CADENA & " hasta " & Format(txtEmpleado(I).Text, "00000")
     End If
 End If
 
@@ -1966,24 +1966,24 @@ If CADENA <> "" Then
 End If
 
 'Las empresas
-i = 0
+I = 0
 Cad = "Empresa desde "
-If txtEmpresa(i).Text <> "" Then
-    If Not IsNumeric(txtEmpresa(i).Text) Then
+If txtEmpresa(I).Text <> "" Then
+    If Not IsNumeric(txtEmpresa(I).Text) Then
         MsgBox Cad & " NO es numérico.", vbExclamation
         Exit Sub
         Else
-            CadenaSQL = CadenaSQL & " AND Empresas.idEmpresa >=" & txtEmpresa(i).Text
+            CadenaSQL = CadenaSQL & " AND Empresas.idEmpresa >=" & txtEmpresa(I).Text
     End If
 End If
-i = 2
+I = 2
 Cad = "Empresa hasta "
-If txtEmpresa(i).Text <> "" Then
-    If Not IsNumeric(txtEmpresa(i).Text) Then
+If txtEmpresa(I).Text <> "" Then
+    If Not IsNumeric(txtEmpresa(I).Text) Then
         MsgBox Cad & " NO es numérico.", vbExclamation
         Exit Sub
         Else
-            CadenaSQL = CadenaSQL & " AND Empresas.IdEmpresa <=" & txtEmpresa(i).Text
+            CadenaSQL = CadenaSQL & " AND Empresas.IdEmpresa <=" & txtEmpresa(I).Text
     End If
 End If
 
@@ -2387,7 +2387,7 @@ Private Sub HacerListadoResumenNomina()
 Dim SQL As String
 Dim Insert As String
 Dim RS As ADODB.Recordset
-Dim i As Integer
+Dim I As Integer
 Dim F1 As Date
 Dim F2 As Date
 Dim HP As Currency
@@ -2401,8 +2401,8 @@ Dim HP As Currency
     
     Set RS = New ADODB.Recordset
     F1 = CDate("01/" & Combo1.ListIndex + 1 & "/" & Text1.Text)
-    i = DiasMes(CInt(Combo1.ListIndex + 1), CInt(Text1.Text))
-    F2 = CDate(i & "/" & Combo1.ListIndex + 1 & "/" & Text1.Text)
+    I = DiasMes(CInt(Combo1.ListIndex + 1), CInt(Text1.Text))
+    F2 = CDate(I & "/" & Combo1.ListIndex + 1 & "/" & Text1.Text)
     
     'Antes del 15 Nov. 2004.   Hemos añadido a la funcioin calcularhor... la opcion 3
     'Que calcula las horas para los tipos control nomina 1,2,3
@@ -2417,13 +2417,14 @@ Dim HP As Currency
     SQL = SQL & "# AND Fecha <=#" & Format(F2, FormatoFecha) & "#"
     
     RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    i = 0
+    I = 0
     Insert = "INSERT INTO tmpDatosMes(mes,DiasTrabajados ,Trabajador ,HORASN,BolsaAntes,Extras,HorasC,BolsaDespues) "
     Insert = Insert & " VALUES (" & Combo1.ListIndex + 1 & "," & Text1.Text & ","  'Para la fecha en el informe
     
     While Not RS.EOF
-        i = i + 1
+        I = I + 1
         
+       
         SQL = RS!idTrabajador & ","
 
         HP = 0
@@ -2471,7 +2472,7 @@ Dim HP As Currency
 '    Conn.Execute SQL
 '
     
-    If i > 0 Then
+    If I > 0 Then
         'Mostramos el informe
         With frmImprimir
             .Opcion = 137
@@ -2543,7 +2544,7 @@ Dim FESTIVOS As String
 Dim vH As CHorarios
 Dim Insert As String
 Dim VALUES As String
-Dim i As Integer
+Dim I As Integer
 Dim HN As Currency
 Dim HC As Currency
 Dim J As Integer
@@ -2628,14 +2629,14 @@ Dim DiaDeBaja As String
         'de insercion. La completamos
         Insert = "INSERT INTO  tmpInformehorasmes (idtrabajador,Nombre,Asesoria"
         
-        VALUES = ") VALUES(" & RS!idTrabajador & ",'" & RS!Nomtrabajador & "','" & DBLet(RS!numdni) & " '"
+        VALUES = ") VALUES(" & RS!idTrabajador & ",'" & RS!nomtrabajador & "','" & DBLet(RS!numdni) & " '"
         
         
         Dias = 0
         HN = 0
         HC = 0
         J = 1
-        Label4.Caption = RS!Nomtrabajador
+        Label4.Caption = RS!nomtrabajador
         Label4.Refresh
         TotalDiasAReajustar = ""
         While Not RS.EOF
@@ -2648,21 +2649,21 @@ Dim DiaDeBaja As String
             'Si es en un A4 voy a imprimir guioncitos de los dias k faltan
             If chkA3.Value = 0 Then
                 If J < (Day(RS!Fecha) - 1) Then
-                    For i = J To Day(RS!Fecha) - 1
+                    For I = J To Day(RS!Fecha) - 1
                         'Normal
-                        Insert = Insert & ",h" & i
+                        Insert = Insert & ",h" & I
                         VALUES = VALUES & ",'- -'"
                         'Compensable
-                        Insert = Insert & ",c" & i
+                        Insert = Insert & ",c" & I
                         VALUES = VALUES & ",'- -'"
-                    Next i
+                    Next I
                 End If
             End If
             J = Day(RS!Fecha) + 1
         
             'PARA CADA DIA
-            i = InStr(1, FESTIVOS, Format(RS!Fecha, "dd/mm/yyyy") & "|")
-            If i > 0 Then
+            I = InStr(1, FESTIVOS, Format(RS!Fecha, "dd/mm/yyyy") & "|")
+            If I > 0 Then
                 'Es festivo
             Else
                 Dias = Dias + 1
@@ -2763,14 +2764,14 @@ Dim DiaDeBaja As String
             Cad = Dias
             Dias = DiasMes((Combo1.ListIndex + 1), CInt(Text1.Text))
             If J < Dias Then
-                For i = J To Dias
+                For I = J To Dias
                     'Normal
-                    Insert = Insert & ",h" & i
+                    Insert = Insert & ",h" & I
                     VALUES = VALUES & ",'- -'"
                     'Compensable
-                    Insert = Insert & ",c" & i
+                    Insert = Insert & ",c" & I
                     VALUES = VALUES & ",'- -'"
-                Next i
+                Next I
             End If
             Dias = Val(Cad)
         End If
@@ -2815,7 +2816,7 @@ Private Sub GenerarImpresionimportesCostesAlzira()
 Dim F1 As Date
 Dim F2 As Date
 Dim SQL As String
-Dim i As Long
+Dim I As Long
 Dim RS As Recordset
 Dim Horas As Currency
 Dim h2 As Currency
@@ -2869,9 +2870,9 @@ Dim h2 As Currency
     
     Set RS = New ADODB.Recordset
     RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    i = 0
+    I = 0
     While Not RS.EOF
-        SQL = "INSERT INTO tmpMarcajes(incFinal,entrada,idTrabajador,Fecha,HorasTrabajadas,HorasIncid) VALUES (0," & i & ","
+        SQL = "INSERT INTO tmpMarcajes(incFinal,entrada,idTrabajador,Fecha,HorasTrabajadas,HorasIncid) VALUES (0," & I & ","
         SQL = SQL & RS!idTrabajador & ",#"
         SQL = SQL & Format(RS!Fecha, FormatoFecha) & "#,"
         If RS!excesodefecto Then
@@ -2886,11 +2887,11 @@ Dim h2 As Currency
         conn.Execute SQL
         'Sig
         RS.MoveNext
-        i = i + 1
+        I = I + 1
     Wend
     RS.Close
     
-    If i = 0 Then
+    If I = 0 Then
         MsgBox "no se ha generado ningun dato con esos valores", vbExclamation
         Exit Sub
     End If
@@ -2921,13 +2922,13 @@ Dim h2 As Currency
     Me.Tag = ""
     
     If Me.optTrab(0).Value Then
-        i = 3
+        I = 3
     Else
-        i = 4
+        I = 4
     End If
-    If Me.Option2(0).Value Then i = i + 10 'El informe 13 y 14
+    If Me.Option2(0).Value Then I = I + 10 'El informe 13 y 14
         
-    frmImprimir.Opcion = i
+    frmImprimir.Opcion = I
     frmImprimir.OtrosParametros = SQL
     frmImprimir.NumeroParametros = 2
     frmImprimir.Show vbModal
